@@ -9,14 +9,15 @@ namespace DailyManagment.Data.Repositories
 {
     public class DailyRepository
     {
-        private readonly DailyContext _context;
+        private readonly static DailyContext _context;
 
-        public DailyRepository(DailyContext context)
+        static DailyRepository()
         {
+            DailyContext context = (DailyContext)Program.ServiceProvider.GetService(typeof(DailyContext));
             _context = context;
         }
 
-        public List<Daily> GetAll()
+        public static List<Daily> GetAll()
         {
             return _context.Dailies.ToList();
         }

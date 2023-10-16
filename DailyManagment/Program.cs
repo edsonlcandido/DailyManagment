@@ -48,7 +48,7 @@ namespace DailyManagment
             if (!_created)
             {
                 _created = true;
-                Database.EnsureCreated();
+                Database.Migrate();
             }
         }
 

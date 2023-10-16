@@ -12,8 +12,8 @@ namespace DailyManagment
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            DailyContext context = (DailyContext)Program.ServiceProvider.GetService(typeof(DailyContext));
-            dataGridView1.DataSource = new DailyRepository(context).GetAll();
+            
+            dataGridView1.DataSource = DailyRepository.GetAll();
         }
     }
 }
