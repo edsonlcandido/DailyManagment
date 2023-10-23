@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DailyManagment.Data.Repositories
 {
@@ -19,7 +20,10 @@ namespace DailyManagment.Data.Repositories
 
         public static List<Daily> GetAll()
         {
-            return _context.Dailies.ToList();
+            return _context.Dailies.Include(e=>e.Produto)
+                .Include(e=>e.Segmento)
+                .Include(e=>e.Tipo)
+                .Include(e=>e.Responsavel).ToList();
         }
 
         public void Add(Daily daily)

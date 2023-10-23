@@ -1,4 +1,6 @@
-﻿namespace DailyManagment.Models
+﻿using System.ComponentModel;
+
+namespace DailyManagment.Models
 {
     public class Status
     {

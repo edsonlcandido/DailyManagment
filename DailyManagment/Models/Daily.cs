@@ -11,8 +11,11 @@ namespace DailyManagment.Models
     {
         [DisplayName("#")]
         public int id { get; set; }
+        public int ProdutoId { get; set; }
         public Produto Produto { get; set; }
+        public int SegmentoId { get; set; }
         public Segmento Segmento { get; set; }
+        public int TipoId { get; set; }
         public Tipo Tipo { get; set; }
         public string? Cliente { get; set; }
         public string? Rev { get; set; }
@@ -24,12 +27,17 @@ namespace DailyManagment.Models
         public DateTime? DataEntregaReal { get; set; }
         [DisplayName("Projeto / Aplicação")]
         public string? Projeto_Aplicacao { get; set; }
+        public int ResponsavelId { get; set; }
         [DisplayName("Responsável")]
         public Responsavel Responsavel { get; set; }
         public string? CRM { get; set; }
+        public int StatusId { get; set; }
         public Status Status { get; set; }
+        public int AnaliseCreditoId { get; set; }
         [DisplayName("Analise de Crédito")]
-        public AnaliseCredito AnaliseCredito { get; set; }        
+        public AnaliseCredito AnaliseCredito { get; set; }
+        [DisplayName("Data Aprovação")]
+        public DateTime? DataAprovacao { get ; set; }
         [DisplayName("Pendência")]
         public string? Pendencia { get; set; }
         public string? PV { get; set; }

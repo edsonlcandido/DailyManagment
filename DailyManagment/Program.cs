@@ -44,11 +44,18 @@ namespace DailyManagment
     {
         private static bool _created = false;
         public DbSet<Daily> Dailies { get; set; }
+        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Segmento> Segmentos { get; set; }
+        public DbSet<Tipo> Tipos { get; set; }
+        public DbSet<Responsavel> Responsaveis { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<AnaliseCredito> AnaliseCredito { get; set; }
+
         public DailyContext() {
             if (!_created)
             {
                 _created = true;
-                Database.Migrate();
+                //Database.Migrate();
             }
         }
 
