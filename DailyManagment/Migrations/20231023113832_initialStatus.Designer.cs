@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyManagment.Migrations
 {
     [DbContext(typeof(DailyContext))]
-    [Migration("20231017162053_addedClassLists")]
-    partial class addedClassLists
+    [Migration("20231023113832_initialStatus")]
+    partial class initialStatus
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,8 @@ namespace DailyManagment.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DataAprovacao")
+                    b.Property<string>("Nome")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -47,6 +48,9 @@ namespace DailyManagment.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Cliente")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DataAprovacao")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("DataDefinicao")
@@ -114,7 +118,7 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Produto");
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("DailyManagment.Models.Responsavel", b =>
@@ -129,7 +133,7 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Responsavel");
+                    b.ToTable("Responsaveis");
                 });
 
             modelBuilder.Entity("DailyManagment.Models.Segmento", b =>
@@ -144,7 +148,7 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Segmento");
+                    b.ToTable("Segmentos");
                 });
 
             modelBuilder.Entity("DailyManagment.Models.Status", b =>
@@ -159,7 +163,7 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Status");
+                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("DailyManagment.Models.Tipo", b =>
@@ -174,7 +178,7 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tipo");
+                    b.ToTable("Tipos");
                 });
 
             modelBuilder.Entity("DailyManagment.Models.Daily", b =>

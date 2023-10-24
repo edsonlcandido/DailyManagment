@@ -17,13 +17,28 @@ namespace DailyManagment.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
 
+            modelBuilder.Entity("DailyManagment.Models.AnaliseCredito", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AnaliseCredito");
+                });
+
             modelBuilder.Entity("DailyManagment.Models.Daily", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AnaliseCredito")
+                    b.Property<int>("AnaliseCreditoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CRM")
@@ -65,7 +80,7 @@ namespace DailyManagment.Migrations
                     b.Property<int>("SegmentoId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("StatusId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("TipoId")
@@ -73,11 +88,15 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("AnaliseCreditoId");
+
                     b.HasIndex("ProdutoId");
 
                     b.HasIndex("ResponsavelId");
 
                     b.HasIndex("SegmentoId");
+
+                    b.HasIndex("StatusId");
 
                     b.HasIndex("TipoId");
 
@@ -96,7 +115,7 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Produto");
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("DailyManagment.Models.Responsavel", b =>
@@ -111,7 +130,7 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Responsavel");
+                    b.ToTable("Responsaveis");
                 });
 
             modelBuilder.Entity("DailyManagment.Models.Segmento", b =>
@@ -126,7 +145,22 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Segmento");
+                    b.ToTable("Segmentos");
+                });
+
+            modelBuilder.Entity("DailyManagment.Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("DailyManagment.Models.Tipo", b =>
@@ -141,11 +175,17 @@ namespace DailyManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tipo");
+                    b.ToTable("Tipos");
                 });
 
             modelBuilder.Entity("DailyManagment.Models.Daily", b =>
                 {
+                    b.HasOne("DailyManagment.Models.AnaliseCredito", "AnaliseCredito")
+                        .WithMany()
+                        .HasForeignKey("AnaliseCreditoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DailyManagment.Models.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoId")
@@ -164,17 +204,27 @@ namespace DailyManagment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DailyManagment.Models.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DailyManagment.Models.Tipo", "Tipo")
                         .WithMany()
                         .HasForeignKey("TipoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AnaliseCredito");
+
                     b.Navigation("Produto");
 
                     b.Navigation("Responsavel");
 
                     b.Navigation("Segmento");
+
+                    b.Navigation("Status");
 
                     b.Navigation("Tipo");
                 });
