@@ -18,12 +18,20 @@ namespace DailyManagment.Data.Repositories
             _context = context;
         }
 
+        public static Daily Get(int id)
+        {
+            return _context.Dailies.Find(id);
+        }
+
         public static List<Daily> GetAll()
         {
             return _context.Dailies.Include(e=>e.Produto)
                 .Include(e=>e.Segmento)
                 .Include(e=>e.Tipo)
-                .Include(e=>e.Responsavel).ToList();
+                .Include(e=>e.Responsavel)
+                .Include(e=>e.Status)
+                .Include(e=>e.AnaliseCredito)
+                .ToList();
         }
 
         public void Add(Daily daily)

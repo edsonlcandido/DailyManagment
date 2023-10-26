@@ -1,6 +1,8 @@
+using DailyManagment.Data.Repositories;
 using DailyManagment.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
 
 namespace DailyManagment
 {
@@ -35,9 +37,103 @@ namespace DailyManagment
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            Application.Run(new Form1(new DailyMainView()));
         }
     }
+
+    public class DailyMainView
+    {
+        private DailyContext _dailyContext;
+        private List<Daily> _dailies
+        {
+            get
+            {
+                return DailyRepository.GetAll();
+            }
+        }
+        public List<DailyViewModel> ListDailyModelViews
+        {
+            get
+            {
+                List<DailyViewModel> listModelViews = new List<DailyViewModel>();
+                foreach (Daily daily in _dailies)
+                {
+                    DailyViewModel dailyModelView = new DailyViewModel
+                    {
+                        Id = daily.id,
+                        Cliente = daily.Cliente,
+                        Rev = daily.Rev,
+                        CRM = daily.CRM,
+                        DataAprovacao = daily.DataAprovacao,
+                        DataDefinicao = daily.DataDefinicao,
+                        DataEntregaPrevista = daily.DataEntregaPrevista,
+                        DataEntregaReal = daily.DataEntregaReal,
+                        Pendencia = daily.Pendencia,
+                        Produto = daily.Produto.Nome,
+                        Projeto_Aplicacao = daily.Projeto_Aplicacao,
+                        PV = daily.PV,
+                        Responsavel = daily.Responsavel.Nome,
+                        Segmento = daily.Segmento.Nome,
+                        Status = daily.Status.Nome,
+                        Tipo = daily.Tipo.Nome,
+                        AnaliseCredito = daily.AnaliseCredito.Nome
+                    };
+
+                    listModelViews.Add(dailyModelView);
+                }
+                return listModelViews;
+            }
+        }
+
+        public DailyMainView()
+        {
+            _dailyContext = (DailyContext)Program.ServiceProvider.GetService(typeof(DailyContext));
+        }
+
+        public DailyMainView(DailyContext dailyContext)
+        {
+            _dailyContext = dailyContext;
+        }
+    }
+
+    public class DailyViewModel
+    {
+        [DisplayName("#")]
+        public int Id { get; set; }
+        [DisplayName("Cliente")]
+        public string? Cliente { get; set; }
+        [DisplayName("Rev")]
+        public string Rev { get; set; }
+        [DisplayName("CRM")]
+        public string? CRM { get; set; }
+        [DisplayName("Data de aprovação")]
+        public DateTime? DataAprovacao { get; set; }
+        [DisplayName("Data de entrega prev.")]
+        public DateTime? DataEntregaPrevista { get; set; }
+        [DisplayName("Data de definição")]
+        public DateTime? DataDefinicao { get; set; }
+        [DisplayName("Data de entrega real")]
+        public DateTime? DataEntregaReal { get; set; }
+        [DisplayName("Pendência")]
+        public string? Pendencia { get; set; }
+        [DisplayName("Produto")]
+        public string Produto { get; set; }
+        [DisplayName("Projeto / Aplicação")]
+        public string? Projeto_Aplicacao { get; set; }
+        [DisplayName("PV")]
+        public string? PV { get; set; }
+        [DisplayName("Responsável")]
+        public string Responsavel { get; set; }
+        [DisplayName("Segmento")]
+        public string Segmento { get; set; }
+        [DisplayName("Status")]
+        public string Status { get; set; }
+        [DisplayName("Tipo")]
+        public string Tipo { get; set; }
+        [DisplayName("Análise de crédito")]
+        public string AnaliseCredito { get; set; }
+    }
+
 
     //create a dbcontext for entityframework
     public class DailyContext : DbContext
@@ -51,7 +147,8 @@ namespace DailyManagment
         public DbSet<Status> Statuses { get; set; }
         public DbSet<AnaliseCredito> AnaliseCredito { get; set; }
 
-        public DailyContext() {
+        public DailyContext()
+        {
             //verify if database exists and create it if not
             if (!Database.CanConnect())
             {
@@ -83,7 +180,7 @@ namespace DailyManagment
                 Tipos.Add(new Tipo() { Nome = "AFM - Reformas" });
                 Tipos.Add(new Tipo() { Nome = "AFM - Retrofit" });
                 Tipos.Add(new Tipo() { Nome = "AFM - Serviços" });
-                Responsaveis.Add(new Responsavel() { Nome = "Edson" }); 
+                Responsaveis.Add(new Responsavel() { Nome = "Edson" });
                 Responsaveis.Add(new Responsavel() { Nome = "Rafael" });
                 Responsaveis.Add(new Responsavel() { Nome = "Ricardo" });
                 Responsaveis.Add(new Responsavel() { Nome = "Rodrigo" });
@@ -125,7 +222,7 @@ namespace DailyManagment
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Produto>().HasData(
-                new Produto() { Id = 1, Nome = "Compressores"}, 
+                new Produto() { Id = 1, Nome = "Compressores" },
                 new Produto() { Id = 2, Nome = "Ventiladores" },
                 new Produto() { Id = 3, Nome = "Pré-aquecedores" },
                 new Produto() { Id = 4, Nome = "Outros" }
@@ -143,13 +240,13 @@ namespace DailyManagment
                 new Segmento() { Id = 10, Nome = "Power" },
                 new Segmento() { Id = 11, Nome = "Pulp & Paper" },
                 new Segmento() { Id = 12, Nome = "Steel" },
-                new Segmento() { Id = 13, Nome = "Tunnel & Metro"},
+                new Segmento() { Id = 13, Nome = "Tunnel & Metro" },
                 new Segmento() { Id = 14, Nome = "Underground Mining" },
                 new Segmento() { Id = 15, Nome = "Water" }
                 );
             //Tipo tem os seguintes tipos dados: NB, AFM - Peças, AFM - Reformas, AFM - Retrofit, AFM - Serviços
             modelBuilder.Entity<Tipo>().HasData(
-                    new Tipo() {Id = 1, Nome = "NB" },
+                    new Tipo() { Id = 1, Nome = "NB" },
                     new Tipo() { Id = 2, Nome = "AFM - Peças" },
                     new Tipo() { Id = 3, Nome = "AFM - Reformas" },
                     new Tipo() { Id = 4, Nome = "AFM - Retrofit" },
@@ -157,10 +254,10 @@ namespace DailyManagment
                 );
             modelBuilder.Entity<Responsavel>().HasData(
                     new Responsavel() { Id = 1, Nome = "Edson" },
-                    new Responsavel() {Id = 2, Nome = "Rafael" },
-                    new Responsavel() {Id = 3, Nome = "Ricardo" },
-                    new Responsavel() {Id = 4, Nome = "Rodrigo" },
-                    new Responsavel() {Id = 5, Nome = "Thiago" }
+                    new Responsavel() { Id = 2, Nome = "Rafael" },
+                    new Responsavel() { Id = 3, Nome = "Ricardo" },
+                    new Responsavel() { Id = 4, Nome = "Rodrigo" },
+                    new Responsavel() { Id = 5, Nome = "Thiago" }
                 );
             modelBuilder.Entity<Status>().HasData(
                     new Status() { Id = 1, Nome = "Aberto" },
